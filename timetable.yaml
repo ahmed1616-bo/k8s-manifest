@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: timetable
+  namespace: esprit-portail-entreprise
+  labels:
+    app:  portail-entreprise
+    portail-entreprise.service: timetable
+spec:    
+  type: ClusterIP
+  ports:
+    - name: "1924"
+      port: 1924
+      targetPort: 1924
+  selector:
+    app: portail-entreprise
+    portail-entreprise.service: timetable
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetable
+  namespace: esprit-portail-entreprise
+  labels:
+    app: portail-entreprise
+    portail-entreprise.service: timetable
+spec:
+  replicas: 2
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: portail-entreprise
+      portail-entreprise.service: timetable
+  template:
+    metadata:
+      labels:
+        app: portail-entreprise
+        portail-entreprise.service: timetable
+    spec: 
+      securityContext:
+        fsGroup: 2003
+      initContainers:
+        - name: volume-permission
+          image: busybox
+          command: ["sh", "-c", "chmod 775 /mnt/portail-entreprise/data/timetable"]
+          volumeMounts:
+            - name: timetable-data
+              mountPath: /mnt/portail-entreprise/data/timetable
+      imagePullSecrets:
+        - name: harbor-creds1  
+      containers:
+      - name: portail-timetable
+        image: harbor.pixelslabs.com/testproject/timetable:latest
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: dev
+          - name: TZ
+            value: "Africa/Tunis"
+        envFrom:
+          - secretRef:
+              name: portail-entreprise-secret
+        volumeMounts:
+          - mountPath: /mnt/portail-entreprise/data/timetable
+            name: timetable-data
+        ports:
+        - containerPort: 1924
+        readinessProbe:
+          httpGet:
+            path: /api/edt/actuator/health/readiness
+            port: 1924
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/edt/actuator/health/liveness
+            port: 1924
+          initialDelaySeconds: 60
+          periodSeconds: 10
+      restartPolicy: Always
+      volumes:
+        - name: timetable-data
+          persistentVolumeClaim:
+            claimName: timetable-data
+    

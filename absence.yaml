@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: absence
+  namespace: esprit-portail-entreprise
+  labels:
+    app:  portail-entreprise
+    portail-entreprise.service: absence
+spec:    
+  type: ClusterIP
+  ports:
+    - name: "1923"
+      port: 1923
+      targetPort: 1923
+  selector:
+    app: portail-entreprise
+    portail-entreprise.service: absence
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: absence
+  namespace: esprit-portail-entreprise
+  labels:
+    app: portail-entreprise
+    portail-entreprise.service: absence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: portail-entreprise
+      portail-entreprise.service: absence
+  template:
+    metadata:
+      labels:
+        app: portail-entreprise
+        portail-entreprise.service: absence
+    spec: 
+      imagePullSecrets:
+        - name: harbor-creds1    
+      containers:
+      - name: portail-absence
+        image: harbor.pixelslabs.com/testproject/absence:latest
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: dev
+          - name: TZ
+            value: "Africa/Tunis"
+        envFrom:
+          - secretRef:
+              name: portail-entreprise-secret
+        ports:
+        - containerPort: 1923
+        readinessProbe:
+          httpGet:
+            path: /api/absence/actuator/health/readiness
+            port: 1923
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/absence/actuator/health/liveness
+            port: 1923
+          initialDelaySeconds: 60
+          periodSeconds: 10
+      restartPolicy: Always
+

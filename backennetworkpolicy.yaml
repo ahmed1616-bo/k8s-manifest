@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-from-gateway
+  namespace: esprit-portail-entreprise
+spec:
+  podSelector:
+    matchLabels:
+      app: portail-entreprise
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          portail-entreprise.service: api-gateway
+    ports:
+    - port: 1919  # Auth
+    - port: 1920  # Profile
+    - port: 1921  # Inscription
+    - port: 1922  # Resultat
+    - port: 1923  # Absence
+    - port: 1924  # Timetable
+    - port: 1925  # Planning
+    - port: 1926  # Score
