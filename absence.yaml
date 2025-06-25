@@ -63,5 +63,11 @@ spec:
             port: 1923
           initialDelaySeconds: 60
           periodSeconds: 10
+        volumeMounts:
+          - name: tmp-volume
+            mountPath: /tmp
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
       restartPolicy: Always
 
