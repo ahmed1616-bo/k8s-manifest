@@ -37,7 +37,18 @@ spec:
         portail-entreprise.service: absence
     spec: 
       imagePullSecrets:
-        - name: harbor-creds1    
+        - name: harbor-creds1
+      securityContext:
+        fsGroup: 2003
+      initContainers:
+      - name: fix-permissions
+        image: busybox:1.35
+        command: ['sh', '-c', 'mkdir -p /tmp-app && chmod 777 /tmp-app']
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp-app
+        securityContext:
+          runAsUser: 0  
       containers:
       - name: portail-absence
         image: harbor.pixelslabs.com/projetesprit/absence:c6cc515727115f5cdc31859e8085e84f5a966f3d
@@ -65,7 +76,7 @@ spec:
           periodSeconds: 10
         volumeMounts:
           - name: tmp-volume
-            mountPath: /tmp
+            mountPath: /tmp-app
       volumes:
         - name: tmp-volume
           emptyDir: {}
