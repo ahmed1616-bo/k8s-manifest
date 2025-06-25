@@ -40,7 +40,7 @@ spec:
         - name: harbor-creds1    
       containers:
       - name: portail-absence
-        image: harbor.pixelslabs.com/projetesprit/absence:latest
+        image: harbor.pixelslabs.com/projetesprit/absence:c6cc515727115f5cdc31859e8085e84f5a966f3d
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
