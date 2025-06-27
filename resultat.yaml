@@ -41,7 +41,7 @@ spec:
         - name: harbor-creds1      
       containers:
       - name: portail-resultat
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_resultat:95ad519181eab8c10474c1d69d79e1c6ac354ca6
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_resultat:8eafba36d1040e717e1e7f3c2f07b83295c625dd
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
