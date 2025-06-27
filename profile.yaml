@@ -41,7 +41,7 @@ spec:
         - name: harbor-creds1  
       containers:
       - name: portail-profile
-        image: harbor.pixelslabs.com/esprit-portail-entreprise_profile:latest
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_profile
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
