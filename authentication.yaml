@@ -42,7 +42,7 @@ spec:
         - name: harbor-creds1    
       containers:
       - name: portail-authentication
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_authenticator:2876de7a062189f27b6ac7d60a0a3260b5e52df2
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_authenticator:b6f113124d2e426fae0bfe68b66aa3d4a649af0c
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
