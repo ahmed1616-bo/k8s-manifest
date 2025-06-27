@@ -41,7 +41,7 @@ spec:
       imagePullSecrets:
         - name: harbor-creds1  
       containers:  
-      - image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_api-gateway
+      - image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_api-gateway:latest
         name: portail-api-gateway
         env:
           - name: SPRING_PROFILES_ACTIVE
