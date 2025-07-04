@@ -28,22 +28,6 @@ spec:
               number: 80
         path: /(.*)
         pathType: Prefix
-  - http:
-      paths:
-      - backend:
-          service:
-            name: api-gateway
-            port:
-              number: 8222
-        path: /gw/(.*)
-        pathType: Prefix
-      - backend:
-          service:
-            name: webapp
-            port:
-              number: 80
-        path: /(.*)
-        pathType: Prefix
 ---
 apiVersion: v1
 kind: Service
