@@ -28,6 +28,22 @@ spec:
               number: 80
         path: /(.*)
         pathType: Prefix
+  - http:
+      paths:
+      - backend:
+          service:
+            name: api-gateway
+            port:
+              number: 8222
+        path: /gw/(.*)
+        pathType: Prefix
+      - backend:
+          service:
+            name: webapp
+            port:
+              number: 80
+        path: /(.*)
+        pathType: Prefix
 ---
 apiVersion: v1
 kind: Service
@@ -70,17 +86,11 @@ spec:
         portail-entreprise.service: webapp
         institute: esb
     spec:
-      securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 0
       imagePullSecrets:
         - name: harbor-creds1       
       containers:
       - name: portail-webapp
         image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_webapp:be71a7e4fc15628453dc60e094cd47ed97c889bb
-        securityContext:
-          runAsUser: 0  
         ports:
         - containerPort: 80    
         readinessProbe:
