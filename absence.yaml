@@ -57,7 +57,7 @@ spec:
           mountPath: /vault/secrets 
       containers:
       - name: portail-absence
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:develop-172bfb53
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:develop-7f670e2e
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
