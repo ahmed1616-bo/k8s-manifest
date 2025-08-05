@@ -115,7 +115,7 @@ spec:
             claimName: timetable-data
         - name: vault-config-esprit
           configMap:
-          name: vault-config-esprit
+            name: vault-config-esprit
         - name: vault-secrets
           emptyDir: {}  
     
