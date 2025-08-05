@@ -84,7 +84,7 @@ spec:
             echo "ERROR: No secrets file found!"
             exit 1
           fi
-          exec java -cp opt/app:opt/app/lib/* com.dsi.absencems.AbsenceMsApplication
+          exec java -cp /opt/app:/opt/app/lib/* com.dsi.absencems.AbsenceMsApplication
         volumeMounts:
         - name: vault-secrets
           mountPath: /vault/secrets
@@ -95,14 +95,16 @@ spec:
           httpGet:
             path: /api/absence/actuator/health/readiness
             port: 1923
-          initialDelaySeconds: 90
+          initialDelaySeconds: 120
           periodSeconds: 30
+          failureThreshold: 3 
         livenessProbe:
           httpGet:
             path: /api/absence/actuator/health/liveness
             port: 1923
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          failureThreshold: 3 
       restartPolicy: Always
       volumes:
       - name: vault-config-esprit
