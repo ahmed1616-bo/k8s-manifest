@@ -89,8 +89,8 @@ spec:
           httpGet:
             path: /api/note/actuator/health/readiness
             port: 1926
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 90
+          periodSeconds: 30
         livenessProbe:
           httpGet:
             path: /api/note/actuator/health/liveness

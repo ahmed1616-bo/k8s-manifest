@@ -91,8 +91,8 @@ spec:
           httpGet:
             path: /api/auth/actuator/health/readiness
             port: 1919
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 90
+          periodSeconds: 30
         livenessProbe:
           httpGet:
             path: /api/auth/actuator/health/liveness

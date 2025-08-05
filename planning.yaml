@@ -89,8 +89,8 @@ spec:
           httpGet:
             path: /api/planif/actuator/health/readiness
             port: 1925
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 90
+          periodSeconds: 30
         livenessProbe:
           httpGet:
             path: /api/planif/actuator/health/liveness

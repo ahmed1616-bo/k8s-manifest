@@ -89,8 +89,8 @@ spec:
           httpGet:
             path: /api/inscription/actuator/health/readiness
             port: 1921
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 90
+          periodSeconds: 30
         livenessProbe:
           httpGet:
             path: /api/inscription/actuator/health/liveness
