@@ -100,7 +100,7 @@ spec:
           httpGet:
             path: /api/edt/actuator/health/readiness
             port: 1924
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
         livenessProbe:
           httpGet:
