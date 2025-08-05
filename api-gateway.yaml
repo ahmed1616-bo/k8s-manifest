@@ -90,14 +90,16 @@ spec:
           httpGet:
             path: /actuator/health/readiness
             port: 8222
-          initialDelaySeconds: 30
-          periodSeconds: 10
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
             port: 8222
           initialDelaySeconds: 60
-          periodSeconds: 10
+          periodSeconds: 30
+          failureThreshold: 3
       restartPolicy: Always
       volumes:
       - name: vault-config-esprit

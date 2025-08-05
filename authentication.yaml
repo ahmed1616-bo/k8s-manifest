@@ -91,14 +91,16 @@ spec:
           httpGet:
             path: /api/auth/actuator/health/readiness
             port: 1919
-          initialDelaySeconds: 90
+          initialDelaySeconds: 240
           periodSeconds: 30
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /api/auth/actuator/health/liveness
             port: 1919
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 240
+          periodSeconds: 30
+          failureThreshold: 3
       restartPolicy: Always
       volumes:
       - name: vault-config-esprit
