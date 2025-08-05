@@ -9,7 +9,7 @@ metadata:
 spec:    
   type: ClusterIP
   ports:
-    - name: "1919"
+    - name: "http"
       port: 1919
       targetPort: 1919
   selector:
@@ -39,7 +39,24 @@ spec:
         portail-entreprise.service: authentication
     spec: 
       imagePullSecrets:
-        - name: harbor-creds1    
+        - name: harbor-creds1
+      serviceAccountName: esprit-app-sa
+      initContainers:
+      - name: vault-init
+        image: hashicorp/vault:1.15.0
+        command: 
+        - vault
+        - agent
+        - -config=/vault/config/esprit-agent.hcl
+        - -exit-after-auth
+        env:
+        - name: VAULT_ADDR
+          value: "http://vault.vault.svc.cluster.local:8200"
+        volumeMounts:
+        - name: vault-config-esprit
+          mountPath: /vault/config
+        - name: vault-secrets
+          mountPath: /vault/secrets   
       containers:
       - name: portail-authentication
         image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_authenticator:b6f113124d2e426fae0bfe68b66aa3d4a649af0c
@@ -48,9 +65,25 @@ spec:
             value: dev
           - name: TZ
             value: "Africa/Tunis"
-        envFrom:
-          - secretRef:
-              name: portail-entreprise-secret
+        command:
+        - sh
+        - -c
+        - |
+          echo "Loading secrets from Vault..."
+          if [ -f /vault/secrets/esprit.env ]; then
+            set -a  
+            . /vault/secrets/esprit.env
+            set +a
+            echo "Secrets loaded successfully!"
+          else
+            echo "ERROR: No secrets file found!"
+            exit 1
+          fi
+          exec java -cp opt/app:opt/app/lib/* com.esprit.dsi.ServiceAuthenticationApplication
+        volumeMounts:
+        - name: vault-secrets
+          mountPath: /vault/secrets
+          readOnly: true
         ports:
         - containerPort: 1919
           protocol: TCP
@@ -67,3 +100,9 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
       restartPolicy: Always
+      volumes:
+      - name: vault-config-esprit
+        configMap:
+          name: vault-config-esprit
+      - name: vault-secrets
+        emptyDir: {}  

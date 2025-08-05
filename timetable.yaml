@@ -9,7 +9,7 @@ metadata:
 spec:    
   type: ClusterIP
   ports:
-    - name: "1924"
+    - name: "http"
       port: 1924
       targetPort: 1924
   selector:
@@ -47,7 +47,24 @@ spec:
             - name: timetable-data
               mountPath: /mnt/portail-entreprise/data/timetable
       imagePullSecrets:
-        - name: harbor-creds1  
+        - name: harbor-creds1
+      serviceAccountName: esprit-app-sa
+      initContainers:
+      - name: vault-init
+        image: hashicorp/vault:1.15.0
+        command: 
+        - vault
+        - agent
+        - -config=/vault/config/esprit-agent.hcl
+        - -exit-after-auth
+        env:
+        - name: VAULT_ADDR
+          value: "http://vault.vault.svc.cluster.local:8200"
+        volumeMounts:
+        - name: vault-config-esprit
+          mountPath: /vault/config
+        - name: vault-secrets
+          mountPath: /vault/secrets   
       containers:
       - name: portail-timetable
         image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:3c5d0f058cc876cce6d58d925ec1ce4df7861e9f
@@ -56,12 +73,27 @@ spec:
             value: dev
           - name: TZ
             value: "Africa/Tunis"
-        envFrom:
-          - secretRef:
-              name: portail-entreprise-secret
+        command:
+        - sh
+        - -c
+        - |
+          echo "Loading secrets from Vault..."
+          if [ -f /vault/secrets/esprit.env ]; then
+            set -a  
+            . /vault/secrets/esprit.env
+            set +a
+            echo "Secrets loaded successfully!"
+          else
+            echo "ERROR: No secrets file found!"
+            exit 1
+          fi
+          exec java -cp opt/app:opt/app/lib/* com.dsi.edtms.EdtMsApplication
         volumeMounts:
-          - mountPath: /mnt/portail-entreprise/data/timetable
-            name: timetable-data
+        - name: vault-secrets
+          mountPath: /vault/secrets
+          readOnly: true
+        - mountPath: /mnt/portail-entreprise/data/timetable
+          name: timetable-data
         ports:
         - containerPort: 1924
         readinessProbe:
@@ -81,4 +113,9 @@ spec:
         - name: timetable-data
           persistentVolumeClaim:
             claimName: timetable-data
+        - name: vault-config-esprit
+          configMap:
+          name: vault-config-esprit
+        - name: vault-secrets
+          emptyDir: {}  
     
