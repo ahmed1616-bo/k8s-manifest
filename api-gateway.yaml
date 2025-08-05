@@ -79,7 +79,7 @@ spec:
             echo "ERROR: No secrets file found!"
             exit 1
           fi
-          exec java,-cp, opt/app:opt/app/lib/* com.jawher.apigateway.ApiGatewayApplication
+          exec java -cp opt/app:opt/app/lib/* com.jawher.apigateway.ApiGatewayApplication
         volumeMounts:
         - name: vault-secrets
           mountPath: /vault/secrets
