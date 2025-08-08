@@ -58,7 +58,7 @@ spec:
         - name: vault-secrets
           mountPath: /vault/secrets 
       containers:  
-      - image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_api-gateway:6d2668cc451370877c12188f3a179623a92d6346
+      - image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_api-gateway:develop-172db55f
         name: portail-api-gateway
         env:
           - name: SPRING_PROFILES_ACTIVE
