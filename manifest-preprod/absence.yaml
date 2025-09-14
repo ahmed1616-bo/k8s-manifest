@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: absence
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-qa
   labels:
     app:  portail-entreprise
     portail-entreprise.service: absence
@@ -21,12 +21,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: absence
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-qa
   labels:
     app: portail-entreprise
     portail-entreprise.service: absence
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: portail-entreprise
@@ -58,7 +58,7 @@ spec:
           mountPath: /vault/secrets 
       containers:
       - name: portail-absence
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:develop-429d45f9
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:v1.2.1
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
@@ -91,6 +91,13 @@ spec:
           readOnly: true
         ports:
         - containerPort: 1923
+        resources:
+          requests:
+            memory: "512Mi"  
+            cpu: "150m"     
+          limits:
+            memory: "1024Mi"  
+            cpu: "1000m"  
         readinessProbe:
           httpGet:
             path: /api/absence/actuator/health/readiness

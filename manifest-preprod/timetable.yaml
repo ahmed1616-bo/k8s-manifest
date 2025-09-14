@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: timetable
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-qa
   labels:
     app:  portail-entreprise
     portail-entreprise.service: timetable
@@ -20,12 +20,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: timetable
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-qa
   labels:
     app: portail-entreprise
     portail-entreprise.service: timetable
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 0
   selector:
     matchLabels:
@@ -67,12 +67,18 @@ spec:
        
       containers:
       - name: portail-timetable
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:3c5d0f058cc876cce6d58d925ec1ce4df7861e9f
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:v1.1.0
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
           - name: TZ
             value: "Africa/Tunis"
+          - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+            value: "health,info,metrics,prometheus"
+          - name: MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED
+            value: "true"
+          - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+            value: "true"
         command:
         - sh
         - -c
@@ -96,6 +102,13 @@ spec:
           name: timetable-data
         ports:
         - containerPort: 1924
+        resources:
+          requests:
+            memory: "512Mi"  
+            cpu: "150m"     
+          limits:
+            memory: "1024Mi"  
+            cpu: "1000m"  
         readinessProbe:
           httpGet:
             path: /api/edt/actuator/health/readiness
@@ -114,7 +127,7 @@ spec:
       volumes:
         - name: timetable-data
           persistentVolumeClaim:
-            claimName: timetable-data
+            claimName: timetable-data-qa
         - name: vault-config-esprit
           configMap:
             name: vault-config-esprit
