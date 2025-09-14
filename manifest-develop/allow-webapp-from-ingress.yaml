@@ -15,3 +15,12 @@ spec:
     ports:
     - protocol: TCP
       port: 80
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: portail-entreprise
+          portail-entreprise.service: api-gateway
+    ports:
+    - protocol: TCP
+      port: 8222
