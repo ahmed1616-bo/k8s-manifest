@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-microservices-from-gateway
+  namespace: esprit-portail-entreprise-dev
+spec:
+  podSelector:
+    matchLabels:
+      app: portail-entreprise
+      portail-entreprise.service: api-gateway
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow traffic from NGINX Ingress Controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8222
+  egress:
+    
+    - to:
+        - podSelector:
+            matchLabels:
+              app: portail-entreprise
+      ports:
+        - protocol: TCP
+          port: 1923  # absence
+        - protocol: TCP
+          port: 1919  # authentication
+        - protocol: TCP
+          port: 1921  # inscription
+        - protocol: TCP
+          port: 1925  # planning
+        - protocol: TCP
+          port: 1920  # profile
+        - protocol: TCP
+          port: 1922  # resultat
+        - protocol: TCP
+          port: 1926  # score
+        - protocol: TCP
+          port: 1924  # timetable
+        - protocol: TCP
+          port: 822
