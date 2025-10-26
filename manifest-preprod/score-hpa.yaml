@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: score-hpa
-  namespace: esprit-portail-entreprise-dev
+  namespace: esprit-portail-entreprise-qa
   labels:
     app: portail-entreprise
     component: autoscaler
@@ -54,4 +54,3 @@ spec:
         value: 1          
         periodSeconds: 60
       selectPolicy: Max    # Choisit la politique la plus agressive (rapidité)
-

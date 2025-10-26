@@ -1,8 +1,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: score-hpa
-  namespace: esprit-portail-entreprise-dev
+  name: profile-hpa
+  namespace: esprit-portail-entreprise-qa
   labels:
     app: portail-entreprise
     component: autoscaler
@@ -10,10 +10,10 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: score
+    name: profile
 
   # Nombre minimum et maximum de pods
-  minReplicas: 1    
+  minReplicas: 1   
   maxReplicas: 5    
 
   # Métriques surveillées (CPU et Mémoire)
@@ -54,4 +54,3 @@ spec:
         value: 1          
         periodSeconds: 60
       selectPolicy: Max    # Choisit la politique la plus agressive (rapidité)
-

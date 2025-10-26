@@ -1,32 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-microservices-to-vault
+  name: allow-dns-fix
   namespace: esprit-portail-entreprise-dev
 spec:
   podSelector:
     matchLabels:
       app: portail-entreprise
+  policyTypes:
+    - Egress
   egress:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: vault
-      ports:
-        - protocol: TCP
-          port: 8200
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: default
+              kubernetes.io/metadata.name: kube-system
           podSelector:
             matchLabels:
-              k8s-app: kube-apiserver
-      ports:
-        - protocol: TCP
-          port: 443
-    - to:
-        - podSelector: {}
+              k8s-app: kube-dns
       ports:
         - protocol: UDP
           port: 53

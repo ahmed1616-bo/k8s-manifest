@@ -26,7 +26,7 @@ metadata:
     app: portail-entreprise
     portail-entreprise.service: absence
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: portail-entreprise
@@ -58,7 +58,7 @@ spec:
           mountPath: /vault/secrets 
       containers:
       - name: portail-absence
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:v1.2.1
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:v1.2.6
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev

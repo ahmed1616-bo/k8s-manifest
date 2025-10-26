@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: webappallow-webapp-from-ingress-dev
-  namespace: esprit-portail-entreprise-dev
+  namespace: esprit-portail-entreprise-qa
 spec:
   podSelector:
     matchLabels:
@@ -34,4 +34,3 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
-

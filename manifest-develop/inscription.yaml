@@ -25,7 +25,7 @@ metadata:
     app: portail-entreprise
     portail-entreprise.service: inscription
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
@@ -36,7 +36,9 @@ spec:
       labels:
         app: portail-entreprise
         portail-entreprise.service: inscription
-    spec:   
+    spec:  
+      nodeSelector:
+        node-role: application-workload 
       imagePullSecrets:
         - name: harbor-creds1
       serviceAccountName: esprit-app-sa
