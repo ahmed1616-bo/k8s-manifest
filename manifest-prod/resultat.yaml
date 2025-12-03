@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: resultat
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-prod
   labels:
     app:  portail-entreprise
     portail-entreprise.service: resultat
@@ -20,7 +20,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: resultat
-  namespace: esprit-portail-entreprise
+  namespace: esprit-portail-entreprise-prod
   labels:
     app: portail-entreprise
     portail-entreprise.service: resultat
@@ -58,7 +58,7 @@ spec:
           mountPath: /vault/secrets      
       containers:
       - name: portail-resultat
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_resultat:8eafba36d1040e717e1e7f3c2f07b83295c625dd
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_resultat:v1.2.1
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev

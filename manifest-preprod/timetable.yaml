@@ -69,7 +69,7 @@ spec:
        
       containers:
       - name: portail-timetable
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:v1.1.0
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:v1.2.0-qa
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
@@ -109,8 +109,8 @@ spec:
             memory: "512Mi"  
             cpu: "150m"     
           limits:
-            memory: "1024Mi"  
-            cpu: "1000m"  
+            memory: "3000Mi"  
+            cpu: "1500m"  
         readinessProbe:
           httpGet:
             path: /api/edt/actuator/health/readiness

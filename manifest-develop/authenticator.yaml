@@ -61,7 +61,7 @@ spec:
           mountPath: /vault/secrets   
       containers:
       - name: portail-authentication
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_authenticator:develop-874268b1
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_authenticator:develop-4f3e98fd
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
@@ -114,8 +114,8 @@ spec:
             memory: "512Mi"  
             cpu: "150m"     
           limits:
-            memory: "1024Mi"  
-            cpu: "1000m" 
+            memory: "2900Mi"  
+            cpu: "1500m" 
       restartPolicy: Always
       volumes:
       - name: vault-config-esprit

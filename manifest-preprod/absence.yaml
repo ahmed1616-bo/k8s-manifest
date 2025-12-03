@@ -60,7 +60,7 @@ spec:
           mountPath: /vault/secrets 
       containers:
       - name: portail-absence
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:v1.2.6
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_absence:v1.4.3-qa
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
@@ -98,8 +98,8 @@ spec:
             memory: "512Mi"  
             cpu: "150m"     
           limits:
-            memory: "1024Mi"  
-            cpu: "1000m"  
+            memory: "2900Mi"  
+            cpu: "1500m"  
         readinessProbe:
           httpGet:
             path: /api/absence/actuator/health/readiness

@@ -64,10 +64,12 @@ spec:
       serviceAccountName: esprit-app-sa
       imagePullSecrets:
         - name: harbor-creds1
+      nodeSelector:
+        node-role: application-workload
        
       containers:
       - name: portail-timetable
-        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:develop-d8b57f07
+        image: harbor.pixelslabs.com/projetesprit/esprit-portail-entreprise_timetable:develop-08009b2a
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: dev
@@ -114,8 +116,8 @@ spec:
             memory: "512Mi"  
             cpu: "150m"     
           limits:
-            memory: "1024Mi"  
-            cpu: "1000m" 
+            memory: "2900Mi"  
+            cpu: "1500m" 
         livenessProbe:
           httpGet:
             path: /api/edt/actuator/health/liveness
